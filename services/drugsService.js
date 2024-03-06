@@ -2,7 +2,6 @@ import { drugs } from "../models/drugsModel.js";
 
 const getDrugs = ({ price, dateAdded }) => {
   const drugsList = drugs.find({});
-  console.log(price);
   if (price) {
     drugsList.sort({ price });
   }
