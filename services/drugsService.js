@@ -12,10 +12,16 @@ const getDrugs = ({ price, dateAdded }) => {
   return drugsList;
 };
 
-const getDrugsByPharmacy = async (pharmacy) => {
-  const drugsList = await drugs.find({ pharmacy });
+const getDrugsByPharmacy = (pharmacy, { price, dateAdded }) => {
+  const drugsList = drugs.find({ pharmacy });
   if (!drugsList || drugsList.length === 0) {
     return null;
+  }
+  if (price) {
+    drugsList.sort({ price });
+  }
+  if (dateAdded) {
+    drugsList.sort({ dateAdded });
   }
   drugsList.sort("-favorite");
   return drugsList;

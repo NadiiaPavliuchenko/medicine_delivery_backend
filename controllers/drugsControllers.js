@@ -19,7 +19,18 @@ export const getDrugs = async (req, res, next) => {
 
 export const getDrugsByPharmacy = async (req, res, next) => {
   try {
-    const drugsList = await drugsService.getDrugsByPharmacy(req.params.id);
+    const price = req.query.price;
+    if (price === "") {
+      res.status(404).send("Not found");
+    }
+    const dateAdded = req.query.date;
+    if (dateAdded === "") {
+      res.status(404).send("Not found");
+    }
+    const drugsList = await drugsService.getDrugsByPharmacy(req.params.id, {
+      price,
+      dateAdded,
+    });
     if (drugsList === null) {
       return res.status(404).send("Not found");
     }
