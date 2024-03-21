@@ -2,9 +2,7 @@
 
 Цей репозиторій містить Node.js проект з базою даних Mongo.db, який виконує функцію серверу для проекту https://nadiiapavliuchenko.github.io/medicine_delivery_frontend/.
 
-Проєкт задеплоєний та доступний за посиланням https://medicine-delivery-backend-t1jj.onrender.com.
-
-Swagger документація до проєкту
+Swagger документація до проєкту доступна за посиланням https://medicine-delivery-backend-t1jj.onrender.com/api-docs/
 
 ## Як запустити проект
 
