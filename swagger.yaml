@@ -1,0 +1,239 @@
+openapi: 3.0.3
+info:
+  title: "Medicine delivery API"
+  description: "An API documentation for medicine online store"
+  version: "1.0.0"
+
+servers:
+  - url: "https://medicine-delivery-backend-t1jj.onrender.com"
+    description: "Live server"
+paths:
+  /api/pharmacies:
+    get:
+      tags:
+        - pharmacies
+      summary: Get all pharmacies
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Pharmacies"
+  /api/drugs:
+    get:
+      tags:
+        - drugs
+      summary: Get all drugs
+      parameters:
+        - in: query
+          name: date_added
+          schema:
+            type: string
+          description: Sort by date added (desc for descending order)
+          example: desc
+          required: false
+        - in: query
+          name: price
+          schema:
+            type: integer
+            format: int64
+          description: Sort by price (asc for ascending order)
+          example: asc
+          required: false
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Drugs"
+        "404":
+          description: Drugs not found
+  /api/drugs/{pharmacyId}:
+    get:
+      tags:
+        - drugs
+      summary: Get drugs by pharmacy
+      parameters:
+        - name: pharmacyId
+          in: path
+          description: ID of pharmacy, from which you need to find medicine
+          required: true
+          schema:
+            type: string
+            example: 648edfa104490fd490173125
+        - in: query
+          name: date_added
+          schema:
+            type: string
+          description: Sort by date added (desc for descending order)
+          example: desc
+          required: false
+        - in: query
+          name: price
+          schema:
+            type: integer
+            format: int64
+          description: Sort by price (asc for ascending order)
+          example: asc
+          required: false
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Drugs"
+        "404":
+          description: Drug not found
+  /api/drugs/{id}/favorite:
+    patch:
+      tags:
+        - drugs
+      summary: Update drug status
+      parameters:
+        - name: id
+          in: path
+          description: drug ID
+          required: true
+          schema:
+            type: string
+            example: 648edfa104490fd490173125
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Drugs"
+        "404":
+          description: Drug not found
+  /api/orders:
+    post:
+      tags:
+        - orders
+      summary: Create new order
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/Order"
+      responses:
+        "201":
+          description: Order successfuly created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Order"
+        "400":
+          description: Bad request
+components:
+  schemas:
+    Pharmacies:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: id mongoose objectId format
+          example: 648edfa104490fd490173125
+        name:
+          type: string
+          description: pharmacy name
+          example: Pharmacy24
+    Drugs:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: id mongoose objectId format
+          example: 65e66850494330ac77ccee34
+        name:
+          type: string
+          description: drug name
+          example: Paracetamol
+        price:
+          type: integer
+          format: int64
+          example: 30
+        photo:
+          type: string
+          description: photo url
+          example: "https://root.tblcdn.com/img/goods/bcd06d58-d8c8-4a14-964c-e63cc752a71d…"
+        pharmacy:
+          type: string
+          description: pharmacy id
+          example: 648edfa104490fd490173125
+        date_added:
+          type: string
+          format: date-time
+        favorite:
+          type: boolean
+    ProductItem:
+      type: object
+      properties:
+        productId:
+          type: string
+          description: The ID of the product.
+        quantity:
+          type: integer
+          description: The quantity of the product.
+        _id:
+          type: string
+          description: The unique identifier for the item.
+      required:
+        - productId
+        - quantity
+        - _id
+    Order:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: id mongoose objectId format
+          example: 65e66850494330ac77ccee34
+        name:
+          type: string
+          description: customer name
+          example: ann
+        email:
+          type: string
+          description: customer email
+          example: ann@mail.com
+        phone:
+          type: string
+          description: customer phone number
+          example: (501) 472-5218
+        address:
+          type: string
+          description: customer address
+          example: Kyiv city, Khreshchatyk street 23
+        price:
+          type: integer
+          format: int64
+          description: order total price
+          example: 60
+        products:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProductItem"
+          description: Array of product items.
+      required:
+        - name
+        - email
+        - phone
+        - address
+        - price
+        - products

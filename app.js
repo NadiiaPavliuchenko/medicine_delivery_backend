@@ -2,12 +2,18 @@ import express from "express";
 import cors from "cors";
 import "dotenv/config";
 import morgan from "morgan";
+import YAML from "yamljs";
+import SwaggerUI from "swagger-ui-express";
 import "./db.js";
 import pharmRouter from "./routes/pharmaciesRouter.js";
 import drugsRouter from "./routes/drugsRouter.js";
 import ordersRouter from "./routes/ordersRouter.js";
 
+const swaggerDocument = YAML.load("./swagger.yaml");
+
 const app = express();
+
+app.use("/api-docs", SwaggerUI.serve, SwaggerUI.setup(swaggerDocument));
 
 app.use(morgan("tiny"));
 app.use(cors());

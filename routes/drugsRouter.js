@@ -11,7 +11,7 @@ import { updateStatusSchema } from "../schemas/drugsSchema.js";
 const drugsRouter = express.Router();
 
 drugsRouter.get("/", getDrugs);
-drugsRouter.get("/:id", isValidId, getDrugsByPharmacy);
+drugsRouter.get("/:pharmacyId", isValidId, getDrugsByPharmacy);
 drugsRouter.patch(
   "/:id/favorite",
   isValidId,
