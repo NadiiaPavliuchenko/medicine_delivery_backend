@@ -27,13 +27,10 @@ export const getDrugsByPharmacy = async (req, res, next) => {
     if (dateAdded === "") {
       res.status(404).send("Not found");
     }
-    const drugsList = await drugsService.getDrugsByPharmacy(
-      req.params.pharmacyId,
-      {
-        price,
-        dateAdded,
-      }
-    );
+    const drugsList = await drugsService.getDrugsByPharmacy(req.params.id, {
+      price,
+      dateAdded,
+    });
     if (drugsList === null) {
       return res.status(404).send("Not found");
     }
