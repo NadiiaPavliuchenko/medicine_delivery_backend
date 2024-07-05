@@ -5,7 +5,8 @@ info:
   version: "1.0.0"
 
 servers:
-  - url: "https://medicine-delivery-backend-t1jj.onrender.com"
+  - url: "http://localhost:8080/"
+    # https://medicine-delivery-backend-t1jj.onrender.com
     description: "Live server"
 paths:
   /api/pharmacies:
@@ -38,8 +39,7 @@ paths:
         - in: query
           name: price
           schema:
-            type: integer
-            format: int64
+            type: string
           description: Sort by price (asc for ascending order)
           example: asc
           required: false
@@ -54,19 +54,19 @@ paths:
                   $ref: "#/components/schemas/Drugs"
         "404":
           description: Drugs not found
-  /api/drugs/{pharmacyId}:
+  /api/drugs/{id}:
     get:
       tags:
         - drugs
       summary: Get drugs by pharmacy
       parameters:
-        - name: pharmacyId
+        - name: id
           in: path
           description: ID of pharmacy, from which you need to find medicine
           required: true
           schema:
             type: string
-            example: 648edfa104490fd490173125
+            example: 65e66850494330ac77ccee34
         - in: query
           name: date_added
           schema:
@@ -77,8 +77,7 @@ paths:
         - in: query
           name: price
           schema:
-            type: integer
-            format: int64
+            type: string
           description: Sort by price (asc for ascending order)
           example: asc
           required: false
@@ -105,7 +104,12 @@ paths:
           required: true
           schema:
             type: string
-            example: 648edfa104490fd490173125
+            example: 65e67138494330ac77ccee3e
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Favorite"
       responses:
         "200":
           description: successful operation
@@ -126,9 +130,7 @@ paths:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: "#/components/schemas/Order"
+              $ref: "#/components/schemas/Order"
       responses:
         "201":
           description: Order successfuly created
@@ -137,7 +139,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Order"
+                  $ref: "#/components/schemas/OrderResponse"
         "400":
           description: Bad request
 components:
@@ -187,23 +189,17 @@ components:
         productId:
           type: string
           description: The ID of the product.
+          example: 65e67138494330ac77ccee3e
         quantity:
           type: integer
           description: The quantity of the product.
-        _id:
-          type: string
-          description: The unique identifier for the item.
+          example: 2
       required:
         - productId
         - quantity
-        - _id
     Order:
       type: object
       properties:
-        _id:
-          type: string
-          description: id mongoose objectId format
-          example: 65e66850494330ac77ccee34
         name:
           type: string
           description: customer name
@@ -237,3 +233,69 @@ components:
         - address
         - price
         - products
+    ProductItemResponse:
+      type: object
+      properties:
+        productId:
+          type: string
+          description: The ID of the product.
+          example: 65e67138494330ac77ccee3e
+        quantity:
+          type: integer
+          description: The quantity of the product.
+          example: 2
+        _id:
+          type: string
+          description: ID of the new order.
+          example: 67r67539494330dc78ccef3f
+      required:
+        - productId
+        - quantity
+    OrderResponse:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID of the new order.
+          example: 67e67539494330ac78ccef3e
+        name:
+          type: string
+          description: customer name
+          example: ann
+        email:
+          type: string
+          description: customer email
+          example: ann@mail.com
+        phone:
+          type: string
+          description: customer phone number
+          example: (501) 472-5218
+        address:
+          type: string
+          description: customer address
+          example: Kyiv city, Khreshchatyk street 23
+        price:
+          type: integer
+          format: int64
+          description: order total price
+          example: 60
+        products:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProductItemResponse"
+          description: Array of product items.
+      required:
+        - name
+        - email
+        - phone
+        - address
+        - price
+        - products
+    Favorite:
+      type: object
+      properties:
+        favorite:
+          type: boolean
+          example: true
+      required:
+        - favorite
