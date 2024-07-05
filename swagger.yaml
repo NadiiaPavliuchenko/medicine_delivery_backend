@@ -5,8 +5,7 @@ info:
   version: "1.0.0"
 
 servers:
-  - url: "http://localhost:8080/"
-    # https://medicine-delivery-backend-t1jj.onrender.com
+  - url: "https://medicine-delivery-backend-t1jj.onrender.com"
     description: "Live server"
 paths:
   /api/pharmacies:
