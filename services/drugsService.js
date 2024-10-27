@@ -14,7 +14,6 @@ const getDrugs = ({ price, dateAdded }) => {
 
 const getDrugsByPharmacy = (pharmacy, { price, dateAdded }) => {
   const drugsList = drugs.find({ pharmacy });
-  console.log(pharmacy);
   if (!drugsList || drugsList.length === 0) {
     return null;
   }
